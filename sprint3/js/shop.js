@@ -139,9 +139,59 @@ function calculateTotal() {
 }
 
 // Exercise 4
-function generateCart() {
+function generateCart(producto) {
     // Using the "cartlist" array that contains all the items in the shopping cart, 
     // generate the "cart" array that does not contain repeated items, instead each item of this array "cart" shows the quantity of product.
+    let posicion=comprobarProducto(producto); //comprobamos si el producto existe en la lista CART
+    // let descuento=document.getElementById('descuentoAplicable');
+    // let ahorro=document.getElementById('ahorro');
+
+
+    if(posicion>=0){ // si el producto esta en la lista no hace falta crearlo
+        cart[posicion].cantidad++;
+        cart[posicion].subtotal=producto.price*cart[posicion].cantidad;
+        
+        showItemsCart();
+    }
+    else{
+        createElementCart(producto); // si no esta en la lista debemos crearlo
+    }
+}
+
+function comprobarProducto(producto){
+    let posicion=-1;
+    for (var i=0;i<cart.length;i++){
+        if(producto.id==cart[i].id){
+            posicion=i;
+        }
+    }
+    return posicion;
+}
+
+function createElementCart(producto){
+    // console.log('\n************************** CREATE ELEMENT ************************************\n');
+    var elemento={};
+    if(producto.id==3 || producto.id==1){ //Estos articulos tienen la particularidad de tener descuentos
+        elemento.name=producto.name;
+        elemento.id=producto.id;
+        elemento.descuento=producto.offer.percent;
+        elemento.cantidad=1;
+        elemento.tipo=producto.type;
+        elemento.subtotal=producto.price; 
+        elemento.subtotalWithDiscount=0;
+    }
+    else{
+        elemento.name=producto.name;
+        elemento.id=producto.id;
+        elemento.cantidad=1;
+        elemento.tipo=producto.type;
+        elemento.subtotal=producto.price; 
+    }
+    cart.push(elemento);
+
+    console.log(' CREATE Lista de CART');
+    showItemsCart();
+    
 }
 
 // Exercise 5
