@@ -69,12 +69,39 @@ var cartList = [];
 // Improved version of cartList. Cart is an array of products (objects), but each one has a quantity field to define its quantity, so these products are not repeated.
 var cart = [];
 
-var total = 0;
+var sumaTotal = 0;
+const minItemCooking=3;
+const minItemCupcake=10;
+const cookingDiscount=0.8; //20%
+const cupkaeDiscount=0.7;//30%
 
 // Exercise 1
 function buy(id) {
     // 1. Loop for to the array products to get the item to add to cart
     // 2. Add found product to the cartList array
+    let contador;
+    for (var i=0;i< products.length;i++){
+        if (id===products[i].id){ 
+            console.log('\nEl producto '+products[i].name+' ha sido añadido al carrito!!');
+            contador=document.getElementById('count_product');
+            cartList.push(products[i]);
+            generateCart(products[i]);
+            sumaTotal+=products[i].price;
+            // if(id==1){
+            //     alert('Promocion!!\nCompra 3 y te damos un 20% de descuento'); //Alertar al usuario cuando añade al carrito!
+            // }
+            // else if(id==3){
+            //     alert('Promocion!!\nCompra 10 y te damos un 30% de descuento');
+            // }
+          
+        }
+    }
+    console.log('\nLista de articulos en el carrito: \n');
+    showCartList();
+    
+    document.getElementById('sumaTotal').innerHTML=sumaTotal;
+    console.log('Sumatotal: '+sumaTotal);
+    contador.innerHTML++;
 }
 
 // Exercise 2
@@ -122,4 +149,15 @@ function printCart() {
 
 function open_modal(){
 	console.log("Open Modal");
+}
+
+function showItemsCart(){
+    for (var i=0;i<cart.length;i++){
+        console.log((i+1)+'-'+JSON.stringify(cart[i]));
+    }
+}
+function showCartList(){
+    for (var i=0;i<cartList.length;i++){
+        console.log((i+1)+'-'+cartList[i].name);
+    }
 }
