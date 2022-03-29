@@ -106,6 +106,19 @@ function buy(id) {
 
 // Exercise 2
 function cleanCart() {
+    console.log('Se ha vaciado el carrito');
+    cartList= [];
+    cart=[];
+    var contador=document.getElementById('count_product');
+    contador.innerHTML=0;
+    sumaTotal=0;
+    document.getElementById('sumaTotal').innerHTML=sumaTotal;
+    document.getElementById('descuentoAplicable').style.backgroundColor='#FFFFFF'
+
+    //otros metodos para vaciar Arrays
+    //cart= [];
+    // cart.length=0;
+    // delete cart[0];
 
 }
 
