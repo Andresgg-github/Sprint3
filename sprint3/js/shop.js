@@ -125,6 +125,17 @@ function cleanCart() {
 // Exercise 3
 function calculateTotal() {
     // Calculate total price of the cart using the "cartList" array
+
+    let suma=0;
+    if(cartList.length>0){
+        for(var i=0;i<cartList.length;i++){
+            suma+=cartList[i].price;
+        }
+    }
+    else{
+        console.log('El carro esta vacio');
+    }
+    console.log('El precio total es: '+suma);
 }
 
 // Exercise 4
