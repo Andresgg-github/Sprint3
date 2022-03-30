@@ -74,6 +74,7 @@ const minItemCooking=3;
 const minItemCupcake=10;
 const cookingDiscount=0.8; //20%
 const cupkaeDiscount=0.7;//30%
+var ahorroTotal=0;
 
 // Exercise 1
 function buy(id) {
@@ -86,7 +87,7 @@ function buy(id) {
             contador=document.getElementById('count_product');
             cartList.push(products[i]);
             generateCart(products[i]);
-            sumaTotal+=products[i].price;
+            totalSuma(products[i].price);
             // if(id==1){
             //     alert('Promocion!!\nCompra 3 y te damos un 20% de descuento'); //Alertar al usuario cuando añade al carrito!
             // }
@@ -110,8 +111,8 @@ function cleanCart() {
     cartList= [];
     cart=[];
     var contador=document.getElementById('count_product');
-    contador.innerHTML=0;
-    sumaTotal=0;
+    ahorroTotal=sumaTotal=contador.innerHTML=0;
+    document.getElementById('ahorro').innerHTML=ahorroTotal;
     document.getElementById('sumaTotal').innerHTML=sumaTotal;
     document.getElementById('descuentoAplicable').style.backgroundColor='#FFFFFF'
 
@@ -123,7 +124,7 @@ function cleanCart() {
 }
 
 // Exercise 3
-function calculateTotal() {
+function calculateTotal() { // el calculo total incluyendo el descuento se encuentra en la función sumaTotalconDescuento
     // Calculate total price of the cart using the "cartList" array
 
     let suma=0;
@@ -143,22 +144,23 @@ function generateCart(producto) {
     // Using the "cartlist" array that contains all the items in the shopping cart, 
     // generate the "cart" array that does not contain repeated items, instead each item of this array "cart" shows the quantity of product.
     let posicion=comprobarProducto(producto); //comprobamos si el producto existe en la lista CART
-    // let descuento=document.getElementById('descuentoAplicable');
-    // let ahorro=document.getElementById('ahorro');
-
-
+    
     if(posicion>=0){ // si el producto esta en la lista no hace falta crearlo
         cart[posicion].cantidad++;
         cart[posicion].subtotal=producto.price*cart[posicion].cantidad;
-        
+
         showItemsCart();
+        
+        applyPromotionsCart(cart[posicion]);
     }
     else{
         createElementCart(producto); // si no esta en la lista debemos crearlo
     }
+
 }
 
 function comprobarProducto(producto){
+    
     let posicion=-1;
     for (var i=0;i<cart.length;i++){
         if(producto.id==cart[i].id){
@@ -195,8 +197,53 @@ function createElementCart(producto){
 }
 
 // Exercise 5
-function applyPromotionsCart() {
+function applyPromotionsCart(producto) {
+   
     // Apply promotions to each item in the array "cart"
+    let descuento=document.getElementById('descuentoAplicable');
+    let ahorro=document.getElementById('ahorro');
+    let descontar=0, ahorroCooking=0,ahorroCupcake=0;
+    
+ 
+    if(producto.id==1 && producto.cantidad>=minItemCooking){
+       
+        alert('Enhorabuena tienes un descuento en COOKING!!');
+        descuento.style.backgroundColor='#ffd700';
+        producto.subtotalWithDiscount=producto.subtotal*cookingDiscount;
+        producto.subtotalWithDiscount=dosDecimales(producto.subtotalWithDiscount);  
+        descontar=producto.subtotal-producto.subtotalWithDiscount;
+        console.log('total suma ANTES es:'+sumaTotal);
+        // totalSuma(-descontar);
+        console.log('Descontar es:'+descontar);
+        console.log('total suma DESPUES es:'+sumaTotal);
+        descontar=dosDecimales(descontar); 
+        ahorroCooking=parseFloat(descontar);
+        // producto.subtotal=producto.subtotalWithDiscount;
+        
+        showItemsCart();
+              
+
+    }
+    if(producto.id==3 && producto.cantidad>=minItemCupcake){
+        
+        alert('Enhorabuena tienes un descuento en CUPCAKES!!');
+        descuento.style.backgroundColor='#3bc6b6';
+        producto.subtotalWithDiscount=producto.subtotal*cupkaeDiscount;
+        producto.subtotalWithDiscount=dosDecimales(producto.subtotalWithDiscount);       
+        descontar=producto.subtotal-producto.subtotalWithDiscount;  
+        descontar=dosDecimales(descontar); 
+        // totalSuma(-descontar);
+        descontar=dosDecimales(descontar); 
+        ahorroCupcake=parseFloat(descontar);
+        // producto.subtotal=producto.subtotalWithDiscount;
+        
+        showItemsCart();
+        
+
+    }   
+    ahorroTotal=ahorroCooking+ahorroCupcake;
+    ahorro.innerHTML=ahorroTotal;
+    
 }
 
 
@@ -234,4 +281,16 @@ function showCartList(){
     for (var i=0;i<cartList.length;i++){
         console.log((i+1)+'-'+cartList[i].name);
     }
+}
+function dosDecimales(numero){
+    return Number.parseFloat(numero).toFixed(2);
+}
+
+function totalSuma(numero){
+    //  NOTAAAA: TENGO QUE DESCONTAAAAAAAR EL AHORRO TOTAL
+    sumaTotal+=numero;
+}
+function sumaTotalconDescuento(){
+    return sumaTotal-ahorroTotal;
+
 }
