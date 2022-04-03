@@ -221,17 +221,19 @@ function aplicarDescuento(){
     ahorro.innerHTML=subtotali;
     return subtotali;
 }
+
+
 function applyPromotionsCart(producto) {
    
     // Apply promotions to each item in the array "cart"
     // let descuento=document.getElementById('descuentoAplicable'); 
     let descontar=0;
     // let ahorroCooking=0,ahorroCupcake=0;
-    
+    let alertaTexto="Enhorabuena tienes un descuento!!\nHaz click en el boton de <b>AHORRO </b><u>cada vez</u> para saber cunato te ahorras";
     
     if(producto.id==1 && producto.cantidad>=minItemCooking){
         // console.log('DENTRO DE COOKING INICIO Ahorro total es: '+ahorroTotal+' ahorro es: '+ahorro.innerHTML);
-        alert('Enhorabuena tienes un descuento en COOKING!!\nHaz click en el boton de ahorro cCADA VEZ para saber cunato te ahorras');
+        alert(alertaTexto) ;
         // descuento.style.backgroundColor='#ffd700';
         producto.subtotalWithDiscount=producto.subtotal*cookingDiscount;
         producto.subtotalWithDiscount=dosDecimales(producto.subtotalWithDiscount);  
@@ -246,7 +248,7 @@ function applyPromotionsCart(producto) {
     }
     if(producto.id==3 && producto.cantidad>=minItemCupcake){
         // console.log('DENTRO CUPCAKE INCIO Ahorro total es: '+ahorroTotal+' ahorro es: '+ahorro.innerHTML);
-        alert('Enhorabuena tienes un descuento en CUPCAKES!!\nHaz click en el boton de ahorro CADA VEZ para saber cunato te ahorras');
+        alert(alertaTexto);
         // descuento.style.backgroundColor='#3bc6b6';
         producto.subtotalWithDiscount=producto.subtotal*cupkaeDiscount;
         producto.subtotalWithDiscount=dosDecimales(producto.subtotalWithDiscount);       

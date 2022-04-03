@@ -1,0 +1,15 @@
+.novalido{
+    color: rgb(246, 6, 6);
+    /* border: 2px solid red; */
+   
+}
+
+.valido{
+    color: rgb(19, 250, 11);
+    /* border: 2px solid rgb(0, 255, 94); */
+}
+
+/* #inputName{
+
+    background-color: rgb(241, 99, 99);
+} */
