@@ -76,16 +76,20 @@ const cookingDiscount=0.8; //20%
 const cupkaeDiscount=0.7;//30%
 var ahorroTotal=0;
 var precioFinal=sumaTotalconDescuento();
+var contador=document.getElementById('count_product');
+var showTotal= document.getElementById('sumaTotal');
+var discount= document.getElementById('descuentoAplicable');
+var ahorro= document.getElementById('ahorro');
 
 // Exercise 1
 function buy(id) {
     // 1. Loop for to the array products to get the item to add to cart
     // 2. Add found product to the cartList array
-    let contador;
+    
     for (var i=0;i< products.length;i++){
         if (id===products[i].id){ 
             console.log('\nEl producto '+products[i].name+' ha sido añadido al carrito!!');
-            contador=document.getElementById('count_product');
+            
             cartList.push(products[i]);
             generateCart(products[i]);
             totalSuma(products[i].price);
@@ -101,8 +105,8 @@ function buy(id) {
     console.log('\nLista de articulos en el carrito: \n');
     showCartList();
     
-    document.getElementById('sumaTotal').innerHTML=sumaTotal;
-    console.log('Sumatotal: '+sumaTotal);
+    // showTotal.innerHTML=sumaTotal;
+    
     contador.innerHTML++;
 }
 
@@ -111,11 +115,10 @@ function cleanCart() {
     console.log('Se ha vaciado el carrito');
     cartList= [];
     cart=[];
-    var contador=document.getElementById('count_product');
     ahorroTotal=sumaTotal=contador.innerHTML=0;
-    document.getElementById('ahorro').innerHTML=ahorroTotal;
-    document.getElementById('sumaTotal').innerHTML=sumaTotal;
-    document.getElementById('descuentoAplicable').style.backgroundColor='#FFFFFF'
+    ahorro.innerHTML=ahorroTotal;
+    showTotal.innerHTML=sumaTotal;
+    discount.style.backgroundColor='#FFFFFF'
 
     //otros metodos para vaciar Arrays
     //cart= [];
@@ -179,6 +182,7 @@ function createElementCart(producto){
         elemento.id=producto.id;
         elemento.descuento=producto.offer.percent;
         elemento.cantidad=1;
+        elemento.precio=producto.price;
         elemento.tipo=producto.type;
         elemento.subtotal=producto.price; 
         elemento.subtotalWithDiscount=0;
@@ -187,6 +191,7 @@ function createElementCart(producto){
         elemento.name=producto.name;
         elemento.id=producto.id;
         elemento.cantidad=1;
+        elemento.precio=producto.price;
         elemento.tipo=producto.type;
         elemento.subtotal=producto.price; 
     }
@@ -201,24 +206,30 @@ function createElementCart(producto){
 
 function aplicarDescuento(){
     let subtotali=0;
-    let ahorro=document.getElementById('ahorro');
+    
+    let vacio=true;
     for(var i=0; i<cart.length;i++){
         if(cart[i].id==1 && cart[i].cantidad>=3){
-            console.log('PUNTO 1 subtotal es: '+subtotali+' cart en i es: '+JSON.stringify(cart[i]));
+            // console.log('PUNTO 1 subtotal es: '+subtotali+' cart en i es: '+JSON.stringify(cart[i]));
             subtotali+=cart[i].subtotal-cart[i].subtotalWithDiscount;   
-            console.log('PUNTO 2 subtotal es: '+subtotali+' cart en i es: '+JSON.stringify(cart[i]));
-            document.getElementById('descuentoAplicable').style.backgroundColor='#ffd700';
+            // console.log('PUNTO 2 subtotal es: '+subtotali+' cart en i es: '+JSON.stringify(cart[i]));
+            discount.style.backgroundColor='#ffd700';
+            vacio=false;
 
         } 
         if(cart[i].cantidad>=10 &&cart[i].id==3){
-            console.log('PUNTO 3 subtotal es: '+subtotali+' cart en i es: '+JSON.stringify(cart[i]));
+            // console.log('PUNTO 3 subtotal es: '+subtotali+' cart en i es: '+JSON.stringify(cart[i]));
             subtotali+=cart[i].subtotal-cart[i].subtotalWithDiscount; 
-            console.log('PUNTO 4 subtotal es: '+subtotali+' cart en i es: '+JSON.stringify(cart[i]));
-            document.getElementById('descuentoAplicable').style.backgroundColor='#3bc6b6';          
+            // console.log('PUNTO 4 subtotal es: '+subtotali+' cart en i es: '+JSON.stringify(cart[i]));
+            discount.style.backgroundColor='#3bc6b6';   
+            vacio=false;       
         }
     }
     subtotali=parseFloat(dosDecimales(subtotali));
     ahorro.innerHTML=subtotali;
+    if(vacio&&cart.length>0 ){
+        alert('Todavia no se pueden aplicar descuentos');
+    }
     return subtotali;
 }
 
@@ -279,14 +290,53 @@ function addToCart(id) {
 
 // Exercise 8
 function removeFromCart(id) {
+    let encontrado=false;
+   
+    if(cart.length==0){
+        alert('No hay ningun producto en la lista');
+    }
+    else{
+        for (var i=0;i<cart.length;i++){
+            if(id==cart[i].id){
+                console.log('PUNTO 0: '+JSON.stringify(cart[i]))
+                encontrado=true;
+                console.log('PUNTO 1: sumatotal'+sumaTotal+' y precio articulo: '+cart[i].precio);
+                console.log('PUNTO 2: sumatotal'+sumaTotal+' y precio articulo negativo: '+(-cart[i].precio));
+                totalSuma(-cart[i].precio);
+
+               if(cart[i].cantidad>1){
+                    cart[i].cantidad--;
+                    cart[i].subtotal-=cart[i].precio;                                                     
+               }
+               else{
+                   if(i==0){
+                       cart.shift();
+                   }
+                   else if(i==cart.length-1){
+                       cart.pop()
+                   }
+                   else{
+                       cart.splice(i,1);
+                   }
+
+               }               
+               
+            }
+
+    }
+    if(!encontrado){
+        console.log('El producto no esta en la lista'); 
+    }
+     showItemsCart();
+    }
+    
+   
+    
+
     // 1. Loop for to the array products to get the item to add to cart
     // 2. Add found product to the cartList array
 }
 
-// Exercise 9
-function printCart() {
-    // Fill the shopping cart modal manipulating the shopping cart dom
-}
 
 
 function open_modal(){
@@ -308,8 +358,13 @@ function dosDecimales(numero){
 }
 
 function totalSuma(numero){
-    //  NOTAAAA: TENGO QUE DESCONTAAAAAAAR EL AHORRO TOTAL
+    
     sumaTotal+=numero;
+    
+    showTotal.innerHTML=sumaTotal;
+    console.log('Sumatotal: '+sumaTotal);
+    // document.querySelector('#sumaTotal').value=sumaTotal;
+   
 }
 function sumaTotalconDescuento(){
     ahorroTotal=aplicarDescuento();
