@@ -1,3 +1,11 @@
+
+
+
+var total= sumaTotalconDescuento();
+
+var p=document.getElementById('count_product').innerHTML=total;
+console.log(p);
+
 // Get the input fields
 var password = document.querySelector(".password");
 var phone = document.querySelector('.phone');
