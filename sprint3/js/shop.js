@@ -75,7 +75,7 @@ const minItemCupcake=10;
 const cookingDiscount=0.8; //20%
 const cupkaeDiscount=0.7;//30%
 var ahorroTotal=0;
-var precioFinal=sumaTotalconDescuento();
+// var precioFinal=sumaTotalconDescuento();
 var contador=document.getElementById('count_product');
 var showTotal= document.getElementById('sumaTotal');
 var discount= document.getElementById('descuentoAplicable');
@@ -226,7 +226,11 @@ function aplicarDescuento(){
         }
     }
     subtotali=parseFloat(dosDecimales(subtotali));
-    ahorro.innerHTML=subtotali;
+    if(ahorro.innerHTML!=null){
+
+        ahorro.innerHTML=subtotali;
+    }
+    
     if(vacio&&cart.length>0 ){
         alert('Todavia no se pueden aplicar descuentos');
     }
@@ -303,6 +307,7 @@ function removeFromCart(id) {
                 console.log('PUNTO 1: sumatotal'+sumaTotal+' y precio articulo: '+cart[i].precio);
                 console.log('PUNTO 2: sumatotal'+sumaTotal+' y precio articulo negativo: '+(-cart[i].precio));
                 totalSuma(-cart[i].precio);
+                contador.innerHTML--;
 
                if(cart[i].cantidad>1){
                     cart[i].cantidad--;

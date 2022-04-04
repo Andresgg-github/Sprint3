@@ -28,12 +28,14 @@ var regex = {
 
 // Exercise 6
 
+if(formulario!=null){
+    formulario.addEventListener('submit', (evento) => {
+        evento.preventDefault();
+    
+    
+    });
+}
 
-formulario.addEventListener('submit', (evento) => {
-    evento.preventDefault();
-
-
-});
 
 const validarFormulario = (e) => {
     switch (e.target.name) {
